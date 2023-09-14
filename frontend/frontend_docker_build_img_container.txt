@@ -2,3 +2,7 @@ docker build -t goals-react .
 docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
 
 # -it is required to be interactive for react projects (even though we are not interacting)
+
+
+# For docker network, "--network goals-net" is not needed, since the react dev server doesn't care about the network (code doesn't run in container but browser)
+docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
