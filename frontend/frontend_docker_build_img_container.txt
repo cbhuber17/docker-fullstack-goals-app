@@ -1,0 +1,4 @@
+docker build -t goals-react .
+docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
+
+# -it is required to be interactive for react projects (even though we are not interacting)
