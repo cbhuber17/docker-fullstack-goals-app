@@ -1,3 +1,5 @@
 docker run --name mongodb --rm -d -p 27017:27017 mongo
 
 docker run --name mongodb --rm -d  --network goals-net mongo
+
+docker run --name mongodb -v data:/data/db --rm -d  --network goals-net -e MONGO_INITDB_ROOT_USERNAME=colin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo

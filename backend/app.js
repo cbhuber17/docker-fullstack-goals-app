@@ -84,9 +84,10 @@ app.delete("/goals/:id", async (req, res) => {
 });
 
 mongoose.connect(
-  // 'mongodb://localhost:27017/course-goals',         // Non-container access
+  // 'mongodb://localhost:27017/course-goals', // Non-container access
   // "mongodb://host.docker.internal:27017/course-goals", // Docker container access
-  "mongodb://mongodb:27017/course-goals", // Docker network access; the second mongodb is the name of the container
+  // "mongodb://mongodb:27017/course-goals", // Docker network access; the second mongodb is the name of the container
+  "mongodb://colin:secret@mongodb:27017/course-goals?authSource=admin", // Mongo DB Authentication
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
