@@ -1,0 +1,62 @@
+# "docker-compose up -d [--build]" [optional --build: rebuild images]
+# "docker-compose down"
+# "docker-compose build"  # Build images only, not start containers
+version: "3.8"
+services:
+  mongodb:
+    # Removed --rm automatically
+    # Detatched mode -d ran with the docker-compose command to execute this file
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    # container_name: mongo
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=colin
+    #   - MONGO_INITDB_ROOT_PASSWORD=secret
+    env_file:
+      - ./env/mongo.env
+    # Network not needed; automatically created with this compose file
+    # networks:
+    #   - goals-net
+
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   args:
+    #     some-arg: 1
+    # image: 'goals-node'
+    ports:
+      - "80:80"
+
+    # Add volume for backend logs; allow them to persist after stopping container
+    # Bind the backend directory such that updates here will reflect updates in the container
+    # Don't overwrite the existing node_modules folder (anonymous volume) - node_modules in the container stay there even though node_modules is missing on the host machine
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    # Backend should not start until DB is ready and running
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    # Bind mount volume so that changes locally also happen in the container
+    volumes:
+      - ./frontend/src:/app/src
+    # Interactive mode --it
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+# Named volumes
+volumes:
+  data:
+  logs:
