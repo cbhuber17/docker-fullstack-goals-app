@@ -97,7 +97,7 @@ function App() {
     } catch (err) {
       setError(
         err.message ||
-          "Deleting the goal failed - the server responsed with an error."
+          "Deleting the goal failed - the server responded with an error."
       );
     }
     setIsLoading(false);
