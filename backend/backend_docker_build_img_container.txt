@@ -1,4 +1,10 @@
 docker build -t goals-node .
 docker run --name goals-backend --rm -d -p 80:80 goals-node
 
+# Add network
 docker run --name goals-backend --rm -d -p 80:80 --network goals-net goals-node
+
+# Bind the backend directory such that updates here will reflect updates in the container
+# Add volume for backend logs; allow them to persist after stopping container
+# Don't overwrite the existing node_modules folder (anonymous volume) - node_modules in the container stay there even though node_modules is missing on the host machine
+docker run --name goals-backend -v "%cd%":/app -v logs:/app/logs -v /app/node_modules --rm -d -p 80:80 -e MONGODB_USERNAME=colin --network goals-net goals-node
