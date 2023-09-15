@@ -6,3 +6,6 @@ docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
 
 # For docker network, "--network goals-net" is not needed, since the react dev server doesn't care about the network (code doesn't run in container but browser)
 docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
+
+# Bind mount volume so that changes locally also happen in the container
+docker run --name goals-frontend -v "%cd%"\src:/app/src --rm -d -p 3000:3000 -it goals-react
